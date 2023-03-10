@@ -1,78 +1,67 @@
 #include <iostream>
 #include <algorithm>
 using namespace std;
-#define MAX_COUNT 100000
+#define MAX_COUNT 10000000
 #define MAX_LOG
 #define MAX_RADIX
 
+int aux[100000005], vmerge[100000005];
 
-int* merge_2(int v[], int st, int dr) {
+void merge_2(int v[], int n, int st, int dr) {
 
 	if (st < dr) {
 		int mid = (st + dr) / 2;
-		int* left = new int[20]; //todo modify
-		int* right = new int[20]; //todo modify
-		int * merge = new int[20]; //todo modify
-		left = merge_2(v, st, mid);
-		right = merge_2(v, mid + 1, dr);
+		merge_2(v,n, st, mid);
+		merge_2(v,n, mid + 1, dr);
 
 		int pi = st, pj = mid + 1, pk = 0;
 		while (pi <= mid && pj <= dr) {
-			if (left[pi - st] <= right[pj - mid - 1]) {
-				merge[pk++] = left[pi - st];
+			if (v[pi - st] <= v[pj - mid - 1]) {
+				vmerge[pk++] = v[pi - st];
 				pi++;
 			}
 			else {
-				merge[pk++] = right[pj - mid - 1];
+				vmerge[pk++] = v[pj - mid - 1];
 				pj++;
 			}
 		}
 		while (pi <= mid) {
-			merge[pk++] = left[pi - st];
+			vmerge[pk++] = v[pi - st];
 			pi++;
 		}
 		while (pj <= dr) {
-			merge[pk++] = right[pj - mid - 1];
+			vmerge[pk++] = v[pj - mid - 1];
 			pj++;
 		}
 
-		return merge;
-	}
-	else {
-		return &v[st];
-	}
+		for (int i = st; i <= dr; i++) v[i] = vmerge[i];
 
-	cout << "OPA OPA";
-	return NULL;
+	}
 }
 
-int* stl_sort(int v[], int n) {
+void stl_sort(int v[], int n) {
 
 	sort(v, v + n);
-
-	return v;
 }
 
-int* count_sort(int v[], int n) {
-	int count[MAX_COUNT];
-	memset(count, 0,sizeof(count));
+void count_sort(int v[], int n) {
+	int maxv = v[0];
 
 	for (int i = 0; i < n; i++) {
-		count[v[i]]++;
+		aux[v[i]]++;
+		maxv = max(maxv, v[i]);
 	}
 	//for (int i = 0; i < 20; i++) cout << count[i] << ' ';
 	int pi = 0;
-	for (int i = 0; i < 20; i++) {
-		while (count[i]) {
+	for (int i = 0; i <= maxv; i++) {
+		while (aux[i]) {
 			v[pi++] = i;
-			count[i]--;
+			aux[i]--;
 		}
 	}
-	//for (int i = 0; i < 20; i++) cout << ans[i] << ' ';
-	return v;
 }
 
-int* insert_sort(int v[], int n) {
+void insert_sort(int v[], int n) {
 
 	//int* ans = new int[20];
 
@@ -86,12 +75,11 @@ int* insert_sort(int v[], int n) {
 		}
 		v[j + 1] = val;
 	}
-	return v;
 }
 
-int* shell_sort(int v[], int n) {
+void shell_sort(int v[], int n) {
 
-	for (int salt = n / 2; salt > 1; salt /= 2) {
+	for (int salt = n / 2; salt > 0; salt /= 2) {
 		for (int i = salt; i < n; i++) {
 			int j = i - salt;
 			int val = v[i];
@@ -102,8 +90,6 @@ int* shell_sort(int v[], int n) {
 			v[j + salt] = val;
 		}
 	}
-
-	return v;
 }
 
 int part(int v[], int st, int dr) {
@@ -133,7 +119,62 @@ void quick_sort(int v[], int st, int dr) {
 }
 
 
+void count_10(int v[], int n, int exp) {
 
-//int* radix_sort(int v[], int n) {
-//
-//}
+	int count[10];
+	memset(count, 0, sizeof(count));
+
+	for (int i = 0; i < n; i++) {
+		count[(v[i] / exp) % 10]++;
+	}
+
+	for (int i = 1; i < 10; i++) count[i] += count[i - 1];
+
+	for (int i = n - 1; i >= 0; i--) {
+		aux[count[(v[i] / exp) % 10] - 1] = v[i];
+		count[(v[i] / exp) % 10]--;
+	}
+
+	for (int i = 0; i < n; i++)
+		v[i] = aux[i];
+
+}
+
+void count_2(int v[], int n, int exp) {
+
+	int count[2];
+	memset(count, 0, sizeof(count));
+
+	for (int i = 0; i < n; i++) {
+		count[((v[i] >> exp) & 1)]++;
+	}
+
+	count[1] += count[0];
+
+	for (int i = n - 1; i >= 0; i--) {
+		aux[count[((v[i] >> exp) & 1)] - 1] = v[i];
+		count[((v[i] >> exp) & 1)]--;
+	}
+
+	for (int i = 0; i < n; i++)
+		v[i] = aux[i];
+
+}
+
+int* radix_sort(int v[], int n, int multip) {
+	int maxnum = v[0];
+	for (int i = 1; i < n; i++) {
+		maxnum = max(maxnum, v[i]);
+	}
+
+	/*for (int exp = 1; maxnum / exp > 0; exp *= 10) {
+		count_10(v,n,exp);
+	}*/
+
+	for (int exp = 0; (maxnum >> exp) > 0; exp++) {
+		count_2(v,n,exp);
+	}
+
+	return v;
+}
+

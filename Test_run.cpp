@@ -1,41 +1,90 @@
 #include <iostream>
+#include <fstream>
+#include <string>
+#include <chrono>
 #include "Sortari.h"
 
 using namespace std;
+#pragma warning (disable : 4996)
+
+int v[100000005];
 
 int main() {
 
-    int v[] = {1, 4, 10, 7, 12, 3, 2, 9, 13,11,14,6,5,8};
-    // 2 3 4 5 7 10 11 23 31 45 665 6543 7653 76756
-    int n = 14;
-    //int* ans = merge_2(v, 0, n - 1);
-    //int* ans2 = stl_sort(v, n);
-    //int* ans3 = count_sort(v, n);
-    //int* ans4 = insert_sort(v, n);
-    //int* ans5 = shell_sort(v, n);
-    quick_sort(v, 0, n - 1);
-    /*for (int i = 0; i < n; i++) {
+    for (int i = 1; i <= 64; i++) {
+        //if (i % 8 != 7 && i % 8 != 0) continue;
+        ifstream fin;
+        ofstream fout;
+        char* fp = new char[strlen("Teste/test1.in") + 1];
+        char* fp2 = new char[strlen("Rezul/test1.out") + 1];
+        if (i < 10) {
+            fp = new char[strlen("Teste/test1.in") + 1];
+            fp2 = new char[strlen("Rezul/test1.out") + 1];
+            strcpy(fp, "Teste/test1.in");
+            strcpy(fp2, "Rezul/test1.out");
+            fp[10] = i + '0';
+            fp2[10] = i + '0';
+        }
+        else {
+            fp = new char[strlen("Teste/test10.in") + 1];
+            fp2 = new char[strlen("Rezul/test10.out") + 1];
+            strcpy(fp, "Teste/test10.in");
+            strcpy(fp2, "Rezul/test10.out");
+            fp[10] = (i/10) + '0';
+            fp2[10] = (i/10) + '0';
+            fp[11] = (i%10) + '0';
+            fp2[11] = (i%10) + '0';
+        }
+        //cout << fp << endl;
+        fin.open(fp);
+        fout.open(fp2, std::ios_base::app);
+        int n;
+        fin >> n;
+        cout << i << endl;
+
+        for (int i = 0; i < n; i++) {
+            fin >> v[i];
+        }
+
+        auto t_start = std::chrono::high_resolution_clock::now();
+
+        //merge_2(v,n, 0, n - 1); DONE
+        //stl_sort(v, n); DONE
+        //count_sort(v, n); DONE
+        //insert_sort(v, n); 
+        //shell_sort(v, n); DONE
+        //quick_sort(v, 0, n - 1); // test 5 crapa
+        radix_sort(v, n, 10); // crapa
+
+        auto t_end = std::chrono::high_resolution_clock::now();
+
+        double elapsed_time_ms = std::chrono::duration<double, std::milli>(t_end - t_start).count();
+
+        fout << "Timp necesar pentru sortare la testul " << i << ": " << elapsed_time_ms << " folosind radixSort (baza 2, dar nu mai am malloc de ans tura asta!)" << endl;
+
+        for (int i = 0; i < n - 1; i++) {
+            if (v[i] > v[i + 1]) {
+                cout << "SORTAREA NU A FOST BUNA!";
+                return 1;
+            }
+        }
+
+        fin.close();
+        fout.close();
+    }
+
+    
+    
+   /* for (int i = 0; i < n - 1; i++) {
+        if (v[i] > v[i + 1]) {
+            cout << "SORTAREA NU A FOST BUNA!";
+            return 1;
+        }
+    }
+
+    for (int i = 0; i < n; i++) {
         cout << ans[i] << ' ';
-    }
-    cout << '\n';
-    for (int i = 0; i < n; i++) {
-       cout << ans2[i] << ' ';
-    }
-    cout << '\n';
-    for (int i = 0; i < n; i++){
-        cout << ans3[i] << ' ';
-    }
-    cout << '\n';
-    for (int i = 0; i < n; i++) {
-        cout << ans4[i] << ' '; 
-    }
-    cout << '\n';
-    for (int i = 0; i < n; i++) {
-        cout << ans5[i] << ' '; 
-    }
-    cout << '\n';*/
-    for (int i = 0; i < n; i++) {
-        cout << v[i] << ' ';
-    }
+    }*/
+
     return 0;
 }

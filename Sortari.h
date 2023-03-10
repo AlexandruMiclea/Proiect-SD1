@@ -2,11 +2,12 @@
 
 //void merge(int v[], int st, int dr, )
 
-int* merge_2(int v[], int st, int dr);
-int* radix_sort(int v[], int n);
-int* shell_sort(int v[], int n);
-int* stl_sort(int v[], int n);
-int* count_sort(int v[], int n);
-int* insert_sort(int v[], int n);
+void merge_2(int v[],int n, int st, int dr);
+int* radix_sort(int v[], int n, int multip);
+void shell_sort(int v[], int n);
+void stl_sort(int v[], int n);
+void count_sort(int v[], int n);
+void insert_sort(int v[], int n);
 void quick_sort(int v[], int st, int dr);
 int part(int v[], int st, int dr);
+void count(int v[], int n, int exp);
