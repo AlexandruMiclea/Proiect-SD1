@@ -2,6 +2,8 @@
 #include <algorithm>
 using namespace std;
 #define MAX_COUNT 100000
+#define MAX_LOG
+#define MAX_RADIX
 
 
 int* merge_2(int v[], int st, int dr) {
@@ -104,6 +106,34 @@ int* shell_sort(int v[], int n) {
 	return v;
 }
 
-int* quick_sort(int v[], int n) {
+int part(int v[], int st, int dr) {
+	int piv = v[dr];
+	int pi = (st-1);
 
+	for (int pj = st; pj <= dr - 1; pj++) {
+		if (v[pj] < piv) {
+			pi++;
+			swap(v[pi],v[pj]);
+		}
+	}
+	swap(v[pi + 1], v[dr]);
+	return (pi + 1);
 }
+
+void quick_sort(int v[], int st, int dr) {
+
+	if (st < dr) {
+
+		int pi = part(v,st,dr);
+
+		//cout << "indexul pl este " << pl << endl;
+		quick_sort(v,st,pi - 1);
+		quick_sort(v,pi + 1,dr);
+	}
+}
+
+
+
+//int* radix_sort(int v[], int n) {
+//
+//}

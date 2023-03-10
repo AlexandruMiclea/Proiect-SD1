@@ -8,4 +8,5 @@ int* shell_sort(int v[], int n);
 int* stl_sort(int v[], int n);
 int* count_sort(int v[], int n);
 int* insert_sort(int v[], int n);
-int* quick_sort(int v[], int n);
+void quick_sort(int v[], int st, int dr);
+int part(int v[], int st, int dr);
