@@ -1,0 +1,15 @@
+Timp necesar pentru sortare la testul 37: 8.8236 folosind mergeSort
+Timp necesar pentru sortare la testul 37: 1.3409 folosind countSort
+Timp necesar pentru sortare la testul 37: 28.6483 folosind STLSort
+Timp necesar pentru sortare la testul 37: 17.6113 folosind shellSort
+Timp necesar pentru sortare la testul 37: 28.7452 folosind radixSort (baza 2 bit operatii pe biti)
+Timp necesar pentru sortare la testul 37: 7.7206 folosind radixSort (baza 10)
+Timp necesar pentru sortare la testul 37: 13.2259 folosind radixSort (baza 2, dar nu mai am malloc de ans tura asta!)
+Timp necesar pentru sortare la testul 37: 1.5875 folosind radixSort (baza 2^10)
+Timp necesar pentru sortare la testul 37: 1.5942 folosind radixSort (baza 2^11)
+Timp necesar pentru sortare la testul 37: 1.5029 folosind radixSort (baza 2^12)
+Timp necesar pentru sortare la testul 37: 1.5664 folosind radixSort (baza 2^13)
+Timp necesar pentru sortare la testul 37: 1.6882 folosind radixSort (baza 2^14)
+Timp necesar pentru sortare la testul 37: 1.6435 folosind radixSort (baza 2^15)
+Timp necesar pentru sortare la testul 37: 1.8575 folosind radixSort (baza 2^16)
+Timp necesar pentru sortare la testul 37: 11.8821 folosind quickSort (hoare)

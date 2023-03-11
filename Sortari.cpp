@@ -91,42 +91,43 @@ void shell_sort(int v[], int n) {
 	}
 }
 
-pair <int, int> part(int v[], int st, int dr, int n) {
+int part(int v[], int st, int dr, int n) {
 	
 	int mid = (st + dr) / 2;
-	if (v[mid] < v[st]) swap(v[st],v[mid]);
+	/*if (v[mid] < v[st]) swap(v[st],v[mid]);
 	if (v[dr] < v[st]) swap(v[st],v[dr]);
-	if (v[mid] < v[dr]) swap(v[mid],v[dr]);
+	if (v[mid] < v[dr]) swap(v[mid],v[dr]);*/
 
-	int piv = v[dr];
+	int piv = v[mid];
 	int pi = (st-1);
-	int dif = 0;
+	int pj = (dr+1);
 
-	for (int pj = st; pj <= dr - 1; pj++) {
-		if (v[pj] <= piv) {
+	while (true) {
+		
+		do {
 			pi++;
-			swap(v[pi],v[pj]);
-		}
-		if (v[pj] == piv) dif++;
+		} while (v[pi] < piv);
+
+		do {
+			pj--;
+		} while (v[pj] > piv);
+
+		if (pi >= pj) return pj;
+
+		swap(v[pi],v[pj]);
 	}
-	
-	pi++;
-	swap(v[pi], v[dr]);
-	dif += pi;
-	
-	return {pi, dif};
 }
 
 void quick_sort(int v[], int st, int dr, int n) {
-	if (st >= dr || st < 0) return;
+	if (st >= 0 && dr >= 0 && st < dr) {
+		//cout << st << ' ' << dr << endl;
 
-	//cout << st << ' ' << dr << endl;
+		int pi = part(v, st, dr, n);
 
-	pair <int, int> pi = part(v,st,dr, n);
-
-	//cout << "indexul pl este " << pl << endl;
-	quick_sort(v,st,pi.first - 1, n);
-	quick_sort(v,pi.second + 1,dr, n);
+		//cout << "indexul pl este " << pl << endl;
+		quick_sort(v, st, pi, n);
+		quick_sort(v, pi + 1, dr, n);
+	}
 }
 
 

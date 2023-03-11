@@ -13,7 +13,7 @@ int auxx[100000005];
 int main() {
 
     for (int i = 1; i <= 64; i++) {
-        if (i % 8 > 4 || i % 8 == 0) continue;
+        //if (i % 8 > 5 || i % 8 == 0) continue;
         //if (i % 8 == 7 || i % 8 == 0) continue;
         //if (i % 8 != 7 && i % 8 != 0) continue;
         ifstream fin;
@@ -51,20 +51,20 @@ int main() {
 
         auto t_start = std::chrono::high_resolution_clock::now();
 
-        //merge_2(v,n, 0, n - 1); DONE
-        //stl_sort(v, n); DONE
-        //count_sort(v, n); DONE
-        //insert_sort(v, n); 
-        //shell_sort(v, n); DONE
-        quick_sort(v, 0, n - 1, n); // test 5 crapa
-        //radix_sort(v, n, 16, i); DONE
+        //merge_2(v,n, 0, n - 1); DONE pro
+        //stl_sort(v, n); DONE *
+        //count_sort(v, n); DONE 
+        insert_sort(v, n); 
+        //shell_sort(v, n); DONE pro
+        //quick_sort(v, 0, n - 1, n); DONE
+        //radix_sort(v, n, 16, i); DONE pro 
 
         auto t_end = std::chrono::high_resolution_clock::now();
 
         double elapsed_time_ms = std::chrono::duration<double, std::milli>(t_end - t_start).count();
 
 
-        //fout << "Timp necesar pentru sortare la testul " << i << ": " << elapsed_time_ms << " folosind quickSort (mediana 3, lomuto)" << endl;
+        fout << "Timp necesar pentru sortare la testul " << i << ": " << elapsed_time_ms << " folosind insertSort" << endl;
 
         /*for (int j = 0; j < n; j++) {
             cout << v[j] << ' ';
