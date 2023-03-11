@@ -8,10 +8,13 @@ using namespace std;
 #pragma warning (disable : 4996)
 
 int v[100000005];
+int auxx[100000005];
 
 int main() {
 
     for (int i = 1; i <= 64; i++) {
+        if (i % 8 > 4 || i % 8 == 0) continue;
+        //if (i % 8 == 7 || i % 8 == 0) continue;
         //if (i % 8 != 7 && i % 8 != 0) continue;
         ifstream fin;
         ofstream fout;
@@ -42,8 +45,8 @@ int main() {
         fin >> n;
         cout << i << endl;
 
-        for (int i = 0; i < n; i++) {
-            fin >> v[i];
+        for (int j = 0; j < n; j++) {
+            fin >> v[j];
         }
 
         auto t_start = std::chrono::high_resolution_clock::now();
@@ -53,17 +56,24 @@ int main() {
         //count_sort(v, n); DONE
         //insert_sort(v, n); 
         //shell_sort(v, n); DONE
-        //quick_sort(v, 0, n - 1); // test 5 crapa
-        radix_sort(v, n, 10); // crapa
+        quick_sort(v, 0, n - 1, n); // test 5 crapa
+        //radix_sort(v, n, 16, i); DONE
 
         auto t_end = std::chrono::high_resolution_clock::now();
 
         double elapsed_time_ms = std::chrono::duration<double, std::milli>(t_end - t_start).count();
 
-        fout << "Timp necesar pentru sortare la testul " << i << ": " << elapsed_time_ms << " folosind radixSort (baza 2, dar nu mai am malloc de ans tura asta!)" << endl;
 
-        for (int i = 0; i < n - 1; i++) {
-            if (v[i] > v[i + 1]) {
+        //fout << "Timp necesar pentru sortare la testul " << i << ": " << elapsed_time_ms << " folosind quickSort (mediana 3, lomuto)" << endl;
+
+        /*for (int j = 0; j < n; j++) {
+            cout << v[j] << ' ';
+        }*/
+
+        //for (int j = 0; j < n; j++) cout << v[j] << ' ';
+
+        for (int k = 0; k < n - 1; k++) {
+            if (v[k] > v[k + 1]) {
                 cout << "SORTAREA NU A FOST BUNA!";
                 return 1;
             }

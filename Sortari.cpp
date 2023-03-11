@@ -43,7 +43,6 @@ void stl_sort(int v[], int n) {
 
 	sort(v, v + n);
 }
-
 void count_sort(int v[], int n) {
 	int maxv = v[0];
 
@@ -92,30 +91,42 @@ void shell_sort(int v[], int n) {
 	}
 }
 
-int part(int v[], int st, int dr) {
+pair <int, int> part(int v[], int st, int dr, int n) {
+	
+	int mid = (st + dr) / 2;
+	if (v[mid] < v[st]) swap(v[st],v[mid]);
+	if (v[dr] < v[st]) swap(v[st],v[dr]);
+	if (v[mid] < v[dr]) swap(v[mid],v[dr]);
+
 	int piv = v[dr];
 	int pi = (st-1);
+	int dif = 0;
 
 	for (int pj = st; pj <= dr - 1; pj++) {
-		if (v[pj] < piv) {
+		if (v[pj] <= piv) {
 			pi++;
 			swap(v[pi],v[pj]);
 		}
+		if (v[pj] == piv) dif++;
 	}
-	swap(v[pi + 1], v[dr]);
-	return (pi + 1);
+	
+	pi++;
+	swap(v[pi], v[dr]);
+	dif += pi;
+	
+	return {pi, dif};
 }
 
-void quick_sort(int v[], int st, int dr) {
+void quick_sort(int v[], int st, int dr, int n) {
+	if (st >= dr || st < 0) return;
 
-	if (st < dr) {
+	//cout << st << ' ' << dr << endl;
 
-		int pi = part(v,st,dr);
+	pair <int, int> pi = part(v,st,dr, n);
 
-		//cout << "indexul pl este " << pl << endl;
-		quick_sort(v,st,pi - 1);
-		quick_sort(v,pi + 1,dr);
-	}
+	//cout << "indexul pl este " << pl << endl;
+	quick_sort(v,st,pi.first - 1, n);
+	quick_sort(v,pi.second + 1,dr, n);
 }
 
 
@@ -125,7 +136,7 @@ void count_10(int v[], int n, int exp) {
 	memset(count, 0, sizeof(count));
 
 	for (int i = 0; i < n; i++) {
-		count[(v[i] / exp) % 10]++;
+		count[(v[i] >> exp) & (1 << exp) - 1]++;
 	}
 
 	for (int i = 1; i < 10; i++) count[i] += count[i - 1];
@@ -140,20 +151,23 @@ void count_10(int v[], int n, int exp) {
 
 }
 
-void count_2(int v[], int n, int exp) {
+void count_2(int v[], int n, int exp, int multip) {
 
-	int count[2];
+	int pow2 = (1 << multip) - 1;
+	//cout << pow2;
+
+	int count[70000];
 	memset(count, 0, sizeof(count));
 
 	for (int i = 0; i < n; i++) {
-		count[((v[i] >> exp) & 1)]++;
+		count[((v[i] >> exp) & pow2)]++;
 	}
 
-	count[1] += count[0];
+	for (int i = 1; i < (1 << multip); i++) count[i] += count[i - 1];
 
 	for (int i = n - 1; i >= 0; i--) {
-		aux[count[((v[i] >> exp) & 1)] - 1] = v[i];
-		count[((v[i] >> exp) & 1)]--;
+		aux[count[((v[i] >> exp) & pow2)] - 1] = v[i];
+		count[((v[i] >> exp) & pow2)]--;
 	}
 
 	for (int i = 0; i < n; i++)
@@ -161,19 +175,21 @@ void count_2(int v[], int n, int exp) {
 
 }
 
-int* radix_sort(int v[], int n, int multip) {
+int* radix_sort(int v[], int n, int multip, int test) {
 	int maxnum = v[0];
 	for (int i = 1; i < n; i++) {
 		maxnum = max(maxnum, v[i]);
 	}
 
-	/*for (int exp = 1; maxnum / exp > 0; exp *= 10) {
-		count_10(v,n,exp);
-	}*/
+	for (int exp = 0; ((maxnum >> exp) > 0) && exp < 32; exp += multip) {
 
-	for (int exp = 0; (maxnum >> exp) > 0; exp++) {
-		count_2(v,n,exp);
+		//cout << (maxnum >> exp) << endl;
+		count_2(v,n,exp, multip);
 	}
+
+	/*for (int exp = 0; (maxnum >> exp) > 0; exp++) {
+		count_2(v,n,exp);
+	}*/
 
 	return v;
 }
